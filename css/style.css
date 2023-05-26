@@ -1,0 +1,43 @@
+body {
+	background-color: #fff;
+	color: #000;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 16px;
+}
+
+a {
+	color: #39c;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #069;
+	text-decoration: underline;
+}
+
+.canvas-container {
+	/* background-image: url(data:image/gif;base64,R0lGODlhCgAKAIAAAOLi4v///yH5BAAHAP8ALAAAAAAKAAoAAAIRhB2ZhxoM3GMSykqd1VltzxQAOw==); */
+	background-image: url('../images/backgrounds/bg0.jpg');
+	background-size: cover;
+	outline:  1px solid #ccc;
+}
+
+.canvas-wrap {
+	position: relative;
+}
+
+/* Make dat.gui positionable */
+.dg {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.dg.a {
+	float: none;
+	margin-right: 0;
+}
+
+.dg.main {
+	width: 350px !important;
+    font-size: 20px;
+}

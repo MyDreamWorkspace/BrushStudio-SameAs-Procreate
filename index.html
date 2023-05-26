@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+<title>TDT Brush Studio</title>
+<script src="./js/brush/fabric.js?v=112906"></script>
+<script src="./js/brush/croquis.js?v=112906"></script>
+<script src="./js/dat.gui.min.js?v=112906"></script>
+<script src="./js/highlight.min.js?v=112906"></script>
+<script src="./js/brush/eraser_brush.mixin.js?v=112906"></script>
+<script src="./js/jquery.min.js?v=112906"></script>
+
+<script>
+	window.addEventListener('load', () => {
+		// Highlight code samples:
+		hljs.configure({
+			tabReplace: '   ', // 3 spaces
+		});
+
+		const els = document.querySelectorAll('pre code');
+		els.forEach((el) => {
+			hljs.highlightBlock(el);
+		})
+	});
+</script>
+<link rel="stylesheet" type="text/css" href="./css/github.min.css">
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+<body>
+
+<!------------------------------------- Panel ------------------------------------->
+<h2>Brush</h2>
+<div class="canvas-wrap">
+	<canvas id="canvas"></canvas>
+</div>
+<div class="image-load" style="display: none;">
+</div>
+<script type="module">
+
+import {bcolor, scolor, bwidth, bopacity, setBrushWidth, setBrushColor, setSecondaryColor, setBrushOpacity, shapes, textures, DatGui, getFabricCanvas} from './js/brush/initialize.js'
+
+function loadCanvas() {
+	(canvasID => {
+		let brush = localStorage.getItem("CurBrush");
+		if (brush == null)
+		{
+			brush = "SauceBrush";
+			localStorage.setItem("CurBrush", brush);
+		}
+		let brushOpts = JSON.parse(localStorage.getItem(brush) || "{}");
+		brushOpts.brushCol = shapes[brushOpts.brushCol];
+		brushOpts.patternCol = textures[brushOpts.patternCol];
+		brushOpts.color = bcolor;
+		brushOpts.scolor = scolor;
+		brushOpts.width = bwidth;
+		brushOpts.opacity = bopacity;
+		const fabricCanvas = getFabricCanvas(canvasID, "CustomBrush", brushOpts),
+		dat = DatGui(brushOpts, fabricCanvas),
+		gui = dat.getGui();
+
+		gui.add(gui, 'brushWidth', 0, 1).step(0.01)
+		.onChange(value => {
+			setBrushWidth(value);
+			fabricCanvas.freeDrawingBrush.width = value;
+			fabricCanvas.freeDrawingBrush.setSize(value);
+		});
+
+		gui.addColor(gui, 'brushColor')
+		.onChange(value => {
+			setBrushColor(value);
+			fabricCanvas.freeDrawingBrush.color = value;
+		});
+
+		gui.addColor(gui, 'brushScolor')
+		.onChange(value => {
+			setSecondaryColor(value);
+			fabricCanvas.freeDrawingBrush.scolor = value;
+		});
+
+		gui.add(gui, 'brushOpacity', 0.1, 1).step(0.1)
+		.onChange(value => {
+			setBrushOpacity(value);
+			fabricCanvas.freeDrawingBrush.opacity = value;
+		});
+
+		dat.addButtons();
+
+		fabricCanvas.getElement().parentNode.parentNode.appendChild(gui.domElement);
+		fabricCanvas.contextTop.globalAlpha = brushOpts.opacity;
+	})('canvas');
+}
+
+$(document).ready(function () {
+	$('.canvas-wrap').hide();
+	shapes.forEach((shape) => {
+		$('.image-load').append('<img src="./' + shape + '" style="visibility: hidden;"/>');
+	})
+	textures.forEach((texture) => {
+		$('.image-load').append('<img src="./' + texture + '" style="visibility: hidden;"/>');
+	})
+	var imgs = document.images,
+    len = imgs.length,
+    counter = 0;
+
+	[].forEach.call( imgs, function( img ) {
+		if(img.complete)
+		incrementCounter();
+		else
+		img.addEventListener( 'load', incrementCounter, false );
+	} );
+
+	function incrementCounter() {
+		counter++;
+		if ( counter === len ) {
+			console.log( 'All images loaded!' );
+			$.getJSON( "/brush.json", function( data ) {
+				var items = [];
+				$.each( data, function( key, val ) {
+					if (localStorage.getItem(key) == null)
+					{
+						// console.log(key, val);
+						localStorage.setItem(key, JSON.stringify(val));
+					}
+				});
+			});
+			loadCanvas();
+			$('.canvas-wrap').show();
+			$('.canvas-container').css('background-image', 'url("../images/backgrounds/bg' + parseInt(Math.random() * 10) % 2 + '.jpg")');
+		}
+	}
+});
+</script>
+</body>
+</html>

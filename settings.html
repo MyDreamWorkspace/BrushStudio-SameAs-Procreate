@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brush control panel</title>
+    <script src="./js/brush/fabric.js?v=112906"></script>
+    <script src="./js/brush/croquis.js?v=112906"></script>
+    <script src="./js/dat.gui.min.js?v=112906"></script>
+    <script src="./js/highlight.min.js?v=112906"></script>
+    <script src="./js/brush/eraser_brush.mixin.js?v=112906"></script>
+    <script src="./js/bootstrap.min.js?v=112906"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/fontawesome.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/brush_style.css">
+</head>
+<body style="height:100vh;max-height: 100vh;">
+<div class="px-4 d-flex flex-column" style="max-width: 100%; max-height: 100vh; width:100%; height:100%;">
+    <div class="py-3 d-flex align-items-baseline">
+        <div class="d-flex flex-grow-1 align-items-baseline">
+            <div style="width:38%">
+                <div style="font-size: 38px; line-height: 1; font-weight: 600; padding-left:1.5rem">Brush Lab</div>
+            </div>
+            <div class="flex-grow-1 flex-shrink-1 px-5 d-flex justify-content-between">
+                <div class="detail-set-header" id="detail_set_header">Stroke Properties</div>
+                <div class="detail-set-control" id="detail-set-control"></div>
+            </div>
+        </div>
+        <div style="width:41%">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <div class="drawing-setting-btn d-flex align-items-baseline">
+                    <div class="detail-set-header">Drawing Pad</div>
+                    <div class="px-2"><i class="fas fa-angle-down"></i></div>
+                </div>
+                <div class="d-flex">
+                    <div class="cancel-btn">Cancel</div>
+                    <div class="done-btn">Done</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pb-5 d-flex flex-grow-1 flex-shrink-1" style="max-height: calc(100vh - 2rem - 51px);">
+        <div class="d-flex" style="flex:1">
+            <div style="width:38%; background: #f9f9f9">
+                <div class="d-flex flex-column nav-panel">
+                    <div class="set-tab active-tab" data-detail-id="stroke" data-panel-title="Stroke Properties">Stroke Path</div>
+                    <div class="set-tab" data-detail-id="stabalization" data-panel-title="Stabalization">Stabalization</div>
+                    <div class="set-tab" data-detail-id="outline" data-panel-title="Outline Propertise">Outline</div>
+                    <div class="set-tab" data-detail-id="taper" data-panel-title="Taper Properties">Taper</div>
+                    <div class="set-tab" data-detail-id="shape" data-panel-title="Shape Source" data-editable="true" data-edit-id="shapeEdit">Shape</div>
+                    <div class="set-tab" data-detail-id="grain" data-panel-title="Grain Source" data-editable="true" data-edit-id="grainEdit">Grain</div>
+                    <div class="set-tab" data-detail-id="color" data-panel-title="Color">Color</div>
+                    <div class="set-tab" data-detail-id="blending" data-panel-title="Blending">Blending</div>
+                    <div class="set-tab" data-detail-id="dynamics" data-panel-title="Dynamics">Dynamics</div>
+                </div>
+            </div>
+            <div class="px-5" style="overflow-y:auto; flex:1;">
+                <div id="stroke" class="detail-set-panel active-panel flex-column" style="overflow: visible;">
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Spacing
+                            </div>
+                            <div class="progress-value" aria-controls="set_value_modal"><span id="stroke_spacing" data-label="Spacing:">1%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_stroke_spacing" data-default-value="1" data-shower-id="stroke_spacing" min="1" max="100" value="1" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Jitter
+                            </div>
+                            <div class="progress-value"><span id="stroke_jitter" data-label="Jitter:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_stroke_jitter" data-default-value="0" data-shower-id="stroke_jitter" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Fall off
+                            </div>
+                            <div class="progress-value"><span id="stroke_falloff" data-label="Fall off:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_stroke_falloff" data-default-value="0" data-shower-id="stroke_falloff" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                </div>
+                <div id="stabalization" class="detail-set-panel flex-column" style="overflow: visible;">
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Streamline
+                            </div>
+                            <div class="progress-value"><span id="stabal_streamline" data-label="Streamline:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_stabal_streamline" data-default-value="0" data-shower-id="stabal_streamline" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Stabalization
+                            </div>
+                            <div class="progress-value"><span id="stabal_stabalization" data-label="Stabalization:">25%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_stabal_stabalization" data-default-value="25" data-shower-id="stabal_stabalization" min="0" max="100" value="25" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                </div>
+                <div id="outline" class="detail-set-panel flex-column" style="overflow: visible;">
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Size
+                            </div>
+                            <div class="progress-value"><span id="outline_size" data-label="Outline Size:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_outline_size" data-default-value="0" data-shower-id="outline_size" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                             pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Contour
+                            </div>
+                            <div class="progress-value"><span id="outline_contour" data-label="Contour:">25%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_outline_contour" data-default-value="6" data-shower-id="outline_contour" min="0" max="100" value="25" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                             pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Placement
+                            </div>
+                            <div class="progress-value"><span id="outline_placement" data-label="Placement:">25%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_outline_placement" data-default-value="6" data-shower-id="outline_placement" min="0" max="100" value="25" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                             pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                </div>
+                <div id="taper" class="detail-set-panel flex-column" style="overflow: visible;">
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Taper amount
+                            </div>
+                        </div>
+                        <div class="detail-set-progress" style="position:relative;">
+                            <img src="images/taperSliderBackground.png" style="width:100%; height:18px; position:absolute; top:0; left:0;"/>
+                            <tc-range-slider id="taper_amount" data-default-value="0" class="taper-slider" slider-width="100%" min="0" max="100" value1="0" value2="100" data-shower-id=""
+                                             slider-height="18px" slider-bg="none"
+                                             pointer-width="2.5rem" pointer-height="2.5rem"
+                                             pointer-bg="url(images/taperSliderThumb.svg) no-repeat" pointer-bg-hover="url(images/taperSliderThumb.svg) no-repeat"
+                                             pointer-bg-focus="url(images/taperSliderThumb.svg) no-repeat" pointer-shadow="none" pointer-shadow-hover="none" pointer-border="0"
+                                             pointer-border-hover="0" pointer-border-focus="0">
+                            </tc-range-slider>
+<!--                            <tc-range-slider min="0" max="100" value="0" slider-width="100%" pointer-width="14px"-->
+<!--                                             pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"-->
+<!--                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"-->
+<!--                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">-->
+<!--                            </tc-range-slider>-->
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Size
+                            </div>
+                            <div class="progress-value"><span id="taper_size" data-label="Size:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_taper_size" data-default-value="0" data-shower-id="taper_size" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Opacity
+                            </div>
+                            <div class="progress-value"><span id="taper_opacity" data-label="Opacity:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_taper_opacity" data-default-value="0" data-shower-id="taper_opacity" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Tip
+                            </div>
+                            <div class="progress-value"><span id="taper_tip" data-label="Tip:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_taper_tip" data-default-value="0" data-shower-id="taper_tip" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                </div>
+                <div id="shape" class="detail-set-panel flex-column" style="overflow: visible;">
+                    <div id="shape_previewer">
+                        <img class="preview-img" id="shape_img">
+                    </div>
+                    <div class="detail-set-sub-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Scatter
+                            </div>
+                            <div class="progress-value"><span id="shape_scatter" data-label="Scatter:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_shape_scatter" data-default-value="0" data-shower-id="shape_scatter" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-sub-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Rotation
+                            </div>
+                            <div class="progress-value"><span id="shape_rotation" data-label="Rotation:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_shape_rotation" data-default-value="0" data-shower-id="shape_rotation" min="-100" max="100" origin-at-center="true" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-sub-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Count
+                            </div>
+                            <div class="progress-value"><span id="shape_count" data-label="Count:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_shape_count" data-default-value="0" data-shower-id="shape_count" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="detail-set-sub-option">
+                        <div class="d-flex justify-content-between py-3 align-items-baseline">
+                            <div class="">
+                                Count Jitter
+                            </div>
+                            <div class="progress-value"><span id="shape_countJitter" data-label="Count Jitter:">0%</span></div>
+                        </div>
+                        <div class="detail-set-progress">
+                            <tc-range-slider id="sli_shape_countJitter" data-default-value="0" data-shower-id="shape_countJitter" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                        </div>
+                    </div>
+                    <div class="switch-option-container">
+                        <div class="d-flex justify-content-between align-items-baseline flex-wrap">
+                            <div class="switch-option d-flex justify-content-between col-lg-12 col-md-12 py-3">
+                                <div class="">Randomized</div>
+                                <div class="">
+                                    <label class="switch">
+                                        <input type="checkbox" name="shape_randomized" id="shape_randomized" data-default-value="false"/>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-option d-flex justify-content-between col-lg-12 col-md-12 py-3">
+                                <div class="">Azimuth</div>
+                                <div class="">
+                                    <label class="switch">
+                                        <input type="checkbox" name="shape_azimuth" id="shape_azimuth" data-default-value="false"/>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-baseline flex-wrap">
+                            <div class="switch-option d-flex justify-content-between col-lg-12 col-md-12 py-3">
+                                <div class="">Flip X</div>
+                                <div class="">
+                                    <label class="switch">
+                                        <input type="checkbox" name="shape_flipX" id="shape_flipX" data-default-value="false"/>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="switch-option d-flex justify-content-between col-lg-12 col-md-12 py-3">
+                                <div class="">Flip Y</div>
+                                <div class="">
+                                    <label class="switch">
+                                        <input type="checkbox" name="shape_flipY" id="shape_flipY" data-default-value="false"/>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="grain" class="detail-set-panel flex-column" style="overflow: visible;">
+                    <div id="grain_previewer">
+                        <img class="preview-img" id="grain_img">
+                    </div>
+                    <div class="d-flex my-3 switch-btn-container">
+                        <div class="switch-btn active" data-sub-panel-id="setting_moving"><span>Moving</span></div>
+                        <div class="switch-btn" data-sub-panel-id="setting_texture"><span>Texture</span></div>
+                    </div>
+                    <div id="setting_moving" class="detail-set-sub-body active">
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Movement
+                                </div>
+                                <div class="progress-value"><span id="moving_movement" data-label="Movement:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_moving_movement" data-default-value="100" data-shower-id="moving_movement" min="0" max="100" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Scale
+                                </div>
+                                <div class="progress-value"><span id="moving_scale" data-label="Scale:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_moving_scale" data-default-value="100" data-shower-id="moving_scale" min="1" max="1000" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Zoom
+                                </div>
+                                <div class="progress-value"><span id="moving_zoom" data-label="Zoom:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_moving_zoom" data-default-value="100" data-shower-id="moving_zoom" min="0" max="100" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Rotation
+                                </div>
+                                <div class="progress-value"><span id="moving_rotation" data-label="Rotation:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_moving_rotation" data-default-value="0" data-shower-id="moving_rotation" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Depth
+                                </div>
+                                <div class="progress-value"><span id="moving_depth" data-label="Depth:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_moving_depth" data-default-value="100" data-shower-id="moving_depth" min="0" max="100" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option d-flex justify-content-between align-items-center">
+                            <div class="">
+                                Offset Jitter
+                            </div>
+                            <div class="d-center">
+                                <label class="switch">
+                                    <input type="checkbox" name="moving_offset_jitter" id="moving_offset_jitter" data-default-value="false"/>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="setting_texture" class="detail-set-sub-body">
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Scale
+                                </div>
+                                <div class="progress-value"><span id="texture_scale" data-label="Scale:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_texture_scale" data-default-value="100" data-shower-id="texture_scale" min="1" max="1000" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Depth
+                                </div>
+                                <div class="progress-value"><span id="texture_depth" data-label="Depth:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_texture_depth" data-default-value="100" data-shower-id="texture_depth" min="0" max="100" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Brightness
+                                </div>
+                                <div class="progress-value"><span id="texture_brightness" data-label="Brightness:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_texture_brightness" data-default-value="0" data-shower-id="texture_brightness" min="-50" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-sub-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Contrast
+                                </div>
+                                <div class="progress-value"><span id="texture_contrast" data-label="Contrast:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_texture_contrast" data-default-value="0" data-shower-id="texture_contrast" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="color" class="detail-set-panel flex-column justify-content-between" style="overflow: visible;">
+                    <div class="detail-set-group">
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Stamp Hue
+                                </div>
+                                <div class="progress-value"><span id="stamp_hue" data-label="Stamp Hue:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_stamp_hue" data-default-value="0" data-shower-id="stamp_hue" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Saturation
+                                </div>
+                                <div class="progress-value"><span id="stamp_saturation" data-label="Stamp Saturation:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_stamp_saturation" data-default-value="0" data-shower-id="stamp_saturation" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Secondary color
+                                </div>
+                                <div class="progress-value"><span id="stamp_secondaryColor" data-label="Stamp Secondary Color:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_stamp_secondaryColor" data-default-value="0" data-shower-id="stamp_secondaryColor" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-set-group">
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Stroke Hue
+                                </div>
+                                <div class="progress-value"><span id="stroke_hue" data-label="Stroke Hue:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_stroke_hue" data-default-value="0" data-shower-id="stroke_hue" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Saturation
+                                </div>
+                                <div class="progress-value"><span id="stroke_saturation" data-label="Stroke Saturation:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_stroke_saturation" data-default-value="0" data-shower-id="stroke_saturation" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Secondary Color
+                                </div>
+                                <div class="progress-value"><span id="stroke_secondaryColor" data-label="Stroke Secondary Color:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_stroke_secondaryColor" data-default-value="0" data-shower-id="stroke_secondaryColor" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-set-group">
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Pressure Hue
+                                </div>
+                                <div class="progress-value"><span id="pressure_hue" data-label="Pressure Hue:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_pressure_hue" data-default-value="100" data-shower-id="pressure_hue" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Saturation
+                                </div>
+                                <div class="progress-value"><span id="pressure_saturation" data-label="Pressure Saturation:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_pressure_saturation" data-default-value="0" data-shower-id="pressure_saturation" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Secondary Color
+                                </div>
+                                <div class="progress-value"><span id="pressure_secondaryColor" data-label="Pressure Secondary Color:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_pressure_secondaryColor" data-default-value="100" data-shower-id="pressure_secondaryColor" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="blending" class="detail-set-panel flex-column" style="overflow: visible;">
+                    <div>
+                        <div class="d-flex justify-content-between detail-set-option">
+                            <div class="col-lg-6 col-md-6 col-sm-12" style="padding:0 !important;">Uniform glaze</div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end" style="padding:0 !important;">
+                                <label class="switch">
+                                    <input type="checkbox" class="blending-group" name="blending_glaze" id="blending_glaze" data-default-value="true" checked/>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between detail-set-option">
+                            <div class="col-lg-6 col-md-6 col-sm-12" style="padding:0 !important;">Intense glaze</div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end" style="padding:0 !important;">
+                                <label class="switch">
+                                    <input type="checkbox" class="blending-group" name="blending_intenseGlaze" id="blending_intenseGlaze" data-default-value="false"/>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between detail-set-option">
+                            <div class="col-lg-6 col-md-6 col-sm-12" style="padding:0 !important;">Uniform blend</div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end" style="padding:0 !important;">
+                                <label class="switch">
+                                    <input type="checkbox" class="blending-group" name="blending_blend" id="blending_blend" data-default-value="false"/>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between detail-set-option">
+                            <div class="col-lg-6 col-md-6 col-sm-12" style="padding:0 !important;">Intense blend</div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 d-flex justify-content-end" style="padding:0 !important;">
+                                <label class="switch">
+                                    <input type="checkbox" class="blending-group" name="blending_intenseBlend" id="blending_intenseBlend" data-default-value="false"/>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail-set-option">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Flow
+                                </div>
+                                <div class="progress-value"><span id="blending_flow" data-label="Flow:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_blending_flow" data-default-value="100" data-shower-id="blending_flow" min="0" max="100" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between detail-set-option align-items-center">
+                            <div>Blend mode</div>
+                            <div class="select-container">
+                                <select name="blend_mode" id="blend_mode" class="mode-select">
+                                    <option value="source-over">Normal</option>
+                                    <option value="multiply">Multiply</option>
+                                    <option value="darken">Darken</option>
+                                    <option value="color-burn">Color Burn</option>
+                                    <option value="xor">Xor</option>
+                                    <!-- <option value="linear-burn">Linear Burn</option> -->
+                                    <option value="darken">Darker Color</option>
+                                    <option value="lighten">Lighten</option>
+                                    <option value="screen">Screen</option>
+                                    <option value="color-dodge">Color Dodge</option>
+                                    <!-- <option value="add">Add</option> -->
+                                    <option value="lighter">Lighter Color</option>
+                                    <option value="overlay">Overlay</option>
+                                    <option value="soft-light">Soft Light</option>
+                                    <option value="hard-light">Hard Light</option>
+                                    <!-- <option value="vivid-light">Vivid Light</option> -->
+                                    <!-- <option value="linear-light">Linear Light</option> -->
+                                    <!-- <option value="pin-light">Pin Light</option> -->
+                                    <!-- <option value="hard-mix">Hard Mix</option> -->
+                                    <option value="difference">Difference</option>
+                                    <option value="exclusion">Exclusion</option>
+                                    <!-- <option value="subtract">Subtract</option> -->
+                                    <!-- <option value="divide">Divide</option> -->
+                                    <option value="hue">Hue</option>
+                                    <option value="saturation">Saturation</option>
+                                    <option value="color">Color</option>
+                                    <option value="luminosity">Luminosity</option>
+                                    <option value="destination-over">Behind</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="justify-content-between detail-set-option d-none">
+                            <div class="">Luminance blend</div>
+                            <div class="">
+                                <label class="switch">
+                                    <input type="checkbox" name="blending_luminance" id="blending_luminance" data-default-value="false"/>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="dynamics" class="detail-set-panel flex-column justify-content-between" style="overflow: visible;">
+                    <div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Speed size
+                                </div>
+                                <div class="progress-value"><span id="dynamics_speedSize" data-label="Speed Size:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_dynamics_speedSize" data-default-value="0" data-shower-id="dynamics_speedSize" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Speed Opacity
+                                </div>
+                                <div class="progress-value"><span id="dynamics_speedOpacity" data-label="Speed Opacity:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_dynamics_speedOpacity" data-default-value="0" data-shower-id="dynamics_speedOpacity" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Jitter size
+                                </div>
+                                <div class="progress-value"><span id="dynamics_jitterSize" data-label="Jitter Size:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_dynamics_jitterSize" data-default-value="0" data-shower-id="dynamics_jitterSize" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Jitter Opacity
+                                </div>
+                                <div class="progress-value"><span id="dynamics_jitterOpacity" data-label="Jitter Opacity:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_dynamics_jitterOpacity" data-default-value="0" data-shower-id="dynamics_jitterOpacity" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                             pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                             pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                            </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Pressure Size
+                                </div>
+                                <div class="progress-value"><span id="dynamics_pressureSize" data-label="Pressure Size:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_dynamics_pressureSize" data-default-value="0" data-shower-id="dynamics_pressureSize" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Pressure Opacity
+                                </div>
+                                <div class="progress-value"><span id="dynamics_pressureOpacity" data-label="Pressure Opacity:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_dynamics_pressureOpacity" data-default-value="0" data-shower-id="dynamics_pressureOpacity" min="-100" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Brush max size
+                                </div>
+                                <div class="progress-value"><span id="brush_max_size" data-label="Max Size:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_brush_max_size" data-default-value="100" data-shower-id="brush_max_size" min="0" max="500" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Brush min size
+                                </div>
+                                <div class="progress-value"><span id="brush_min_size" data-label="Min Size:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_brush_min_size" data-default-value="0" data-shower-id="brush_min_size" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Brush max opacity
+                                </div>
+                                <div class="progress-value"><span id="brush_max_opacity" data-label="Max Opacity:">100%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_brush_max_opacity" data-default-value="100" data-shower-id="brush_max_opacity" min="0" max="100" value="100" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                        <div class="detail-set-option" style="padding-bottom: 1.3rem !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Brush min opacity
+                                </div>
+                                <div class="progress-value"><span id="brush_min_opacity" data-label="Min Opacity:">0%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_brush_min_opacity" data-default-value="0" data-shower-id="brush_min_opacity" min="0" max="100" value="0" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width:41%; position:relative">
+            <div class="drawing-preview">
+                <canvas id="previewer" style="width: 100%; height:100%; border:1px solid #000000;">
+                </canvas>
+            </div>
+            <div class="drawing-setting-panel px-4" id="drawing_set_panel">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div style="width:45%">
+                        <div class="detail-set-header py-2">Settings</div>
+                        <div class="detail-set-option" style="margin-bottom: 0 !important;">
+                            <div class="d-flex justify-content-between py-3 align-items-baseline">
+                                <div class="">
+                                    Preview size
+                                </div>
+                                <div class="progress-value"><span id="preview_size" data-label="Preview Size:">35%</span></div>
+                            </div>
+                            <div class="detail-set-progress">
+                                <tc-range-slider id="sli_preview_size" data-default-value="35" data-shower-id="preview_size" min="0" max="100" value="35" slider-width="100%" slider-height="3px" pointer-width="14px"
+                                                 pointer-height="14px" slider-bg="#dfdfdf" slider-bg-hover="#4ab0ff" slider-bg-fill="#4ab0ff"
+                                                 pointer-bg="#4ab0ff" pointer-bg-hover="#4ab0ff" pointer-bg-focus="#4ab0ff"
+                                                 pointer-border="0px solid #fff" point-border-hover="0px solid #fff" pointer-border-focus="0px solid #fff">
+                                </tc-range-slider>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column" style="width:45%">
+                        <div class="d-flex justify-content-between" style="padding: 1rem 0 0.75rem 0;">
+                            <div class="btn-colorPanel active" data-id="main_color">Main Color</div>
+                            <div class="btn-colorPanel" data-id="2nd_color">2nd Color</div>
+                        </div>
+                        <div class="color-panel active" id="main_color">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="color-option" style="background:#e53e41"></div>
+                                <div class="color-option" style="background:#f0ba0f"></div>
+                                <div class="color-option" style="background:#88d017"></div>
+                                <div class="color-option" style="background:#4ab0ff"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-2">
+                                <div class="color-option" style="background:#d72b83"></div>
+                                <div class="color-option" style="background:#7f10f1"></div>
+                                <div class="color-option active" style="background:#ffffff"></div>
+                                <div class="color-option" style="background:#000000"></div>
+                            </div>
+                        </div>
+                        <div class="color-panel" id="2nd_color">
+                            <div class="d-flex justify-content-between align-items-center pt-2">
+                                <div class="two-nd-color-option" style="background:#d72b83"></div>
+                                <div class="two-nd-color-option" style="background:#7f10f1"></div>
+                                <div class="two-nd-color-option active" style="background:#ffffff"></div>
+                                <div class="two-nd-color-option" style="background:#000000"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="two-nd-color-option" style="background:#e53e41"></div>
+                                <div class="two-nd-color-option" style="background:#f0ba0f"></div>
+                                <div class="two-nd-color-option" style="background:#88d017"></div>
+                                <div class="two-nd-color-option" style="background:#4ab0ff"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div id="clearbtn" class="setting-control-btn col-lg-5 col-md-12 my-3 active"><span>Clear drawing pad</span></div>
+                    <div id="resetbtn" class="setting-control-btn col-lg-5 col-md-12 my-3"><span>Reset all brush settings</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="set_value_modal" role="dialog">
+        <div class="modal-dialog" style="margin: 0 !important; max-width: 300px !important;">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-between align-items-center">
+                    <span style="font-size: 16px; font-weight: bold; width: 30%;" id="value_name"></span>
+                    <input type="number" id="slider_value_input" min="0" max="10" step="1">
+                    <button id="btn_progress_done" type="button" class="btn btn-primary">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="img_select">
+        <div class="modal-dialog"><!--modal-dialog-centered-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    Select Image
+                </div>
+                <div class="modal-body">
+                    <div id="img-container" class="d-flex justify-content-between flex-wrap" style="width:100%; max-height: calc(90vh - 200px); overflow-y: scroll;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_done" type="button" class="btn btn-primary">Done</button>
+                    <button type="button" class="btn btn-primary close-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="./js/jquery.min.js?v=112906"></script>
+<script src="./js/tcrs-origin-center.min.js?v=112906"></script>
+<script src="./js/tcrs-generated-labels.min.js?v=112906"></script>
+<script src="./js/toolcool-range-slider.min.js?v=112906"></script>
+<script src="./js/brush/brushScript.js?v=112906" type="module"></script>
+</html>

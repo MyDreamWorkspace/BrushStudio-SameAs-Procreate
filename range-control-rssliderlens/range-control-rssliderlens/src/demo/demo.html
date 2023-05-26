@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>rsSliderLens plugin</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="demo.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="../jquery.rsSliderLens.js"></script>
+    <style>
+        body {
+     background-color: #454545;
+}
+ .sliderlens {
+     opacity: .8;
+     cursor: pointer;
+}
+ .sliderlens.focus {
+     opacity: 1;
+}
+ .sliderlens .range {
+     background-color: #050505;
+     border-width: 0.0625em;
+     border-style: solid;
+     -webkit-border-image: -webkit-linear-gradient(top,#121212,#787878) 1;
+     -moz-border-image: -moz-linear-gradient(top,#121212,#787878) 1;
+     -o-border-image: -o-linear-gradient(top,#121212,#787878) 1;
+     -ms-border-image: -ms-linear-gradient(top,#121212,#787878) 1;
+     border-image: linear-gradient(to bottom,#121212,#787878) 1;
+}
+ .sliderlens .range > div {
+     background-color: #313131;
+}
+ .sliderlens .range.drag > div {
+     cursor: ew-resize;
+}
+ .sliderlens .range.drag.dragging > div {
+     cursor: none;
+}
+ .sliderlens > .handle, .sliderlens > .handle1, .sliderlens > .handle2 {
+     border-radius: 3em/.75em;
+     cursor: ew-resize;
+     background-color: #454545;
+     box-shadow: 0 0 0.3125em -0.03125em #000000;
+     border: 0 solid #787878;
+     border-bottom-color: #121212;
+     border-width: 0.0625em 0;
+}
+ .sliderlens > .handle:before, .sliderlens > .handle:after, .sliderlens > .handle1:before, .sliderlens > .handle1:after, .sliderlens > .handle2:before, .sliderlens > .handle2:after {
+     content: '';
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+}
+ .sliderlens > .handle.dragging, .sliderlens > .handle1.dragging, .sliderlens > .handle2.dragging {
+     box-shadow: 0 0 0.3125em -0.0625em #000000;
+}
+ .sliderlens > .handle .range, .sliderlens > .handle1 .range, .sliderlens > .handle2 .range {
+     -webkit-border-image: -webkit-linear-gradient(top,#121212,#d1d1d1) 1;
+     -moz-border-image: -moz-linear-gradient(top,#121212,#d1d1d1) 1;
+     -o-border-image: -o-linear-gradient(top,#121212,#d1d1d1) 1;
+     -ms-border-image: -ms-linear-gradient(top,#121212,#d1d1d1) 1;
+     border-image: linear-gradient(to bottom,#121212,#d1d1d1) 1;
+}
+ .sliderlens > .handle:before {
+     right: 50%;
+     bottom: 55%;
+     border-right: 0.0625em solid rgba(186,186,186,0.6);
+     z-index: 1;
+}
+ .sliderlens > .handle:after {
+     background: -webkit-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: -moz-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: -o-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: -ms-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: linear-gradient(to right,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+}
+ .sliderlens > .handle1 {
+     border-top-right-radius: 0;
+     border-bottom-right-radius: 0;
+}
+ .sliderlens > .handle1:after {
+     background: -webkit-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: -moz-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: -o-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: -ms-linear-gradient(left,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: linear-gradient(to right,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+}
+ .sliderlens > .handle2 {
+     border-top-left-radius: 0;
+     border-bottom-left-radius: 0;
+}
+ .sliderlens > .handle2:after {
+     background: -webkit-linear-gradient(left,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: -moz-linear-gradient(left,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: -o-linear-gradient(left,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: -ms-linear-gradient(left,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: linear-gradient(to right,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+}
+ .sliderlens svg > path {
+     stroke: rgba(186,186,186,0.6);
+}
+ .sliderlens svg > g > text {
+     fill: rgba(186,186,186,0.6);
+     font-size: .5em;
+}
+ .sliderlens.vert > .handle, .sliderlens.vert > .handle1, .sliderlens.vert > .handle2 {
+     cursor: ns-resize;
+     border-radius: 3em/.75em;
+}
+ .sliderlens.vert > .handle .range, .sliderlens.vert > .handle1 .range, .sliderlens.vert > .handle2 .range {
+     -webkit-border-image: -webkit-linear-gradient(top,#121212,#787878) 1;
+     -moz-border-image: -moz-linear-gradient(top,#121212,#787878) 1;
+     -o-border-image: -o-linear-gradient(top,#121212,#787878) 1;
+     -ms-border-image: -ms-linear-gradient(top,#121212,#787878) 1;
+     border-image: linear-gradient(to bottom,#121212,#787878) 1;
+}
+ .sliderlens.vert > .handle:before {
+     right: 55%;
+     bottom: 50%;
+     border-right: none;
+     border-bottom: 0.0625em solid rgba(186,186,186,0.6);
+}
+ .sliderlens.vert > .handle:after {
+     background: -webkit-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: -moz-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: -o-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: -ms-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+     background: linear-gradient(to bottom,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 50%,rgba(56,56,56,0.25) 50%,rgba(56,56,56,0.95) 100%);
+}
+ .sliderlens.vert > .handle1 {
+     border-bottom: none;
+     border-bottom-left-radius: 0;
+     border-bottom-right-radius: 0;
+}
+ .sliderlens.vert > .handle1:after {
+     background: -webkit-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: -moz-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: -o-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: -ms-linear-gradient(top,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+     background: linear-gradient(to bottom,rgba(69,69,69,0.95) 0%,rgba(120,120,120,0.25) 100%);
+}
+ .sliderlens.vert > .handle2 {
+     border-top: none;
+     border-top-left-radius: 0;
+     border-top-right-radius: 0;
+}
+ .sliderlens.vert > .handle2:after {
+     background: -webkit-linear-gradient(top,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: -moz-linear-gradient(top,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: -o-linear-gradient(top,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: -ms-linear-gradient(top,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+     background: linear-gradient(to bottom,rgba(56,56,56,0.25) 0%,rgba(56,56,56,0.95) 100%);
+}
+ .sliderlens.fixed {
+     border-width: 0.0625em;
+     border-style: solid;
+     -webkit-border-image: -webkit-linear-gradient(top,#121212,#787878) 1;
+     -moz-border-image: -moz-linear-gradient(top,#121212,#787878) 1;
+     -o-border-image: -o-linear-gradient(top,#121212,#787878) 1;
+     -ms-border-image: -ms-linear-gradient(top,#121212,#787878) 1;
+     border-image: linear-gradient(to bottom,#121212,#787878) 1;
+     background-color: #383838;
+     cursor: ew-resize;
+}
+ .sliderlens.fixed:before, .sliderlens.fixed:after {
+     content: '';
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     border-width: 0 0 0.0625em 0;
+     border-style: solid;
+     pointer-events: none;
+     -webkit-border-image: -webkit-linear-gradient(top,#050505,#5f5f5f) 1;
+     -moz-border-image: -moz-linear-gradient(top,#050505,#5f5f5f) 1;
+     -o-border-image: -o-linear-gradient(top,#050505,#5f5f5f) 1;
+     -ms-border-image: -ms-linear-gradient(top,#050505,#5f5f5f) 1;
+     border-image: linear-gradient(to bottom,#050505,#5f5f5f) 1;
+}
+ .sliderlens.fixed:after {
+     border-width: 0 0.0625em;
+     box-shadow: inset 1em 0 1.25em -0.5em #000000, inset -1em 0 1.25em -0.5em #000000;
+}
+ .sliderlens.fixed.vert {
+     cursor: ns-resize;
+}
+ .sliderlens.fixed.vert:before {
+     border-width: 0 0.0625em;
+}
+ .sliderlens.fixed.vert:after {
+     border-width: 0 0 0.0625em 0;
+     box-shadow: inset 0 1em 1.25em -0.5em #000000, inset 0 -1em 1.25em -0.5em #000000;
+}
+ .sliderlens.fixed > .handle {
+     border-radius: 0;
+     border: none;
+}
+ .sliderlens.vert .range.drag > div {
+     cursor: ns-resize;
+}
+ .sliderlens.dragging {
+     cursor: none;
+}
+ .sliderlens.dragging > .handle, .sliderlens.dragging > .handle1, .sliderlens.dragging > .handle2 {
+     cursor: none;
+}
+
+ </style>
+</head>
+<body>
+    <h1>jquery-rsSliderLens demonstration</h1>
+    <p>With this plug-in, you can change the default input range, from this:</p>
+    <pre>
+&lt;input type="range"&gt;
+    </pre>
+    <section>
+        <!-- 0 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>to:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    <span>$("input").rsSliderLens();</span>
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 1 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>To use a step 25, you can add a <code>step</code> attribute to the <code>&lt;input&gt;</code> element or add a parameter to the plug-in constructor:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        <span>step: 25</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 2 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>The 0 and 100 labels are cropped! No problem, just add a padding space equal to 10% of the slider width:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 25,
+        <span>paddingStart: 0.1,
+        paddingEnd: 0.1</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 3 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>By default <code>&lt;input type="range"&gt;</code> has a range between 0 and 100.<br>
+      For other ranges, you can add <code>min</code> and <code>max</code> attributes to the <code>&lt;input&gt;</code> element, or in the plug-in constructor:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 25,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        <span>min: -50,
+        max: 150</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 4 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>Great, but now the labels overlap each other.<br>
+      To fix this, you have some options: (click each one for a sample)</p>
+    <aside class="opt1">
+        <label><input name="opt" type="radio" value="1" checked>Increase the slider width in CSS;</label>
+        <label><input name="opt" type="radio" value="2">Increase the slider width in the plug-in constructor;</label>
+        <label><input name="opt" type="radio" value="3">Use a vertical slider;</label>
+        <label><input name="opt" type="radio" value="4">Hide the labels;</label>
+        <label><input name="opt" type="radio" value="5">Use a fixed handle slider.</label>
+    </aside>
+
+    <div id="o1">
+    <pre>
+&lt;input type="range"&gt;
+<span>&lt;style&gt;
+    input {
+        width: 400px;
+    }
+&lt;/style&gt;</span>
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 25,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        min: -50,
+        max: 150
+    });
+&lt;/script&gt;
+    </pre>
+        <section>
+            <!-- 5 -->
+            <input type="range">
+            <label></label>
+        </section>
+    </div>
+
+    <div id="o2">
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        <span>width: 400,</span>
+        step: 25,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        min: -50,
+        max: 150
+    });
+&lt;/script&gt;
+    </pre>
+        <section>
+            <!-- 6 -->
+            <input type="range">
+            <label></label>
+        </section>
+    </div>
+
+    <div id="o3">
+    <pre>
+&lt;input type="range"&gt;
+<span>&lt;style&gt;
+    input {
+        width: 40px;
+        height: 300px;
+    }
+&lt;/style&gt;</span>
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 25,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        min: -50,
+        max: 150
+    });
+&lt;/script&gt;
+    </pre>
+        <section>
+            <!-- 7 -->
+            <input type="range">
+            <label></label>
+        </section>
+    </div>
+
+    <div id="o4">
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 25,
+        min: -50,
+        max: 150,
+        <span>ruler: {
+            labels: {
+                visible: false
+            }
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+        <section>
+            <!-- 8 -->
+            <input type="range">
+            <label></label>
+        </section>
+    </div>
+
+    <div id="o5">
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 25,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        min: -50,
+        max: 150,
+        <span>fixedHandle: true,
+        ruler: {
+            size: 4 <mark>// 400% of the &lt;input type=range&gt; width</mark>
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+        <section>
+            <!-- 9 -->
+            <input type="range">
+            <label></label>
+        </section>
+    </div>
+
+    <p>Use a range to restrict input even further:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        width: 300,
+        height: 45,
+        step: 10,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        <span>range: {
+            type: [20, 60],
+            draggable: true
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 10 -->
+        <input type="range">
+        <label></label>
+    </section>
+    <p class="small">Use your mouse to drag the range to other location</p>
+
+    <p>If you want labels every 20 positions, but with a <code>step</code> of 1:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        <span>step: 1,</span>
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        <span>ruler: {
+            labels: {
+                values: [0, 20, 40, 60, 80, 100]
+            }
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 11 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>The same slider, but now with a fixed handle style with a <code>min</code> of 0 and <code>max</code> of 500:</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    <span>var labels = [];
+    for (var i = 0; i <= 500; i+= 20) {
+        labels.push(i);
+    }</span>
+    $("input").rsSliderLens({
+        <span>step: 1,</span>
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        <span>width: 300,
+        max: 500,
+        fixedHandle: true,
+        ruler: {
+            labels: {
+                values: labels
+            }
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 12 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <p>Using customized events to display current value inside the handle and to style labels:</p>
+    <pre>
+&lt;input type="range"&gt;
+<span>&lt;style&gt;
+    #custom + .range, <mark>// range outside the handle </mark>
+    #custom ~ .handle .range { <mark>// range inside the handle </mark>
+        background: -moz-linear-gradient(left, red 0%, green 100%);
+        background: -webkit-linear-gradient(left, red 0%, green 100%);
+        background: linear-gradient(to right, red 0%, green 100%);
+    }
+&lt;/style&gt;</span>
+&lt;script&gt;
+    $("input").rsSliderLens({
+        step: 1,
+        paddingStart: 0.1,
+        paddingEnd: 0.1,
+        min: -20,
+        max: 20,
+        ruler: {
+            labels: {
+                values: [-20, -10, 0, 10, 20],
+                <span>onCustomLabel: function(event, value) {
+                    return value > 0 ? '+' + value : value;
+                },
+                onCustomAttrs: function(event, value) {
+                    if (value < 0) return { style: 'fill:red' };
+                    if (value > 0) return { style: 'fill:green' };
+                    <mark>// no style defined for zero, so returns nothing (or undefined)</mark>
+                }</span>
+            }
+        },
+        <span>onCreate: function (event) {
+            <mark>// append a new child &lt;label&gt; element to the .handle</mark>
+            $(event.currentTarget).nextAll(".handle").append("&lt;label&gt;");
+        },
+        onChange: function (event, value) {
+            <mark>// use the &lt;label&gt; element created at run-time, to display the current value</mark>
+            var $labelElement = $(event.currentTarget).nextAll(".handle").children("label");
+            $labelElement.text(value < 0 ? value : ((value > 0 ? '+' : '') + value));
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 13 -->
+        <input type="range" id="custom">
+    </section>
+
+    <p>You have the choice of <code>OnChange</code> or <code>OnFinalChange</code> (recommended for computationally expensive tasks)</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        <span>onChange: function (event, value) {
+            $changeLabel.text(value);
+        },
+        onFinalChange: function (event, value) {
+            $finalChangeLabel.text(value);
+        }</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 14 -->
+        <input type="range">
+        <aside id="changeLabels">
+            <label></label>
+            <label></label>
+        </aside>
+    </section>
+
+    <p>Did I mention the support for double handle sliders?</p>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("input").rsSliderLens({
+        <span>value: [10, 25]</span>
+    });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 15 -->
+        <input type="range">
+        <aside id="doubleHandleLabels">
+            <label></label>
+            <label></label>
+        </aside>
+    </section>
+
+    <p>You can bind the plug-in to any element, not only to an <code>&lt;input type=range&gt;</code>:</p>
+    <pre>
+&lt;span&gt;Hello world&lt;/span&gt;
+&lt;script&gt;
+    $("span").rsSliderLens({ ruler: { visible: false } });
+&lt;/script&gt;
+    </pre>
+    <section class="bottommargin">
+        <!-- 16 -->
+        <span class="slider">Hello world</span>
+        <label></label>
+    </section><br>
+
+    <pre>
+&lt;span&gt;
+    &lt;img src="./pic1.jpg" width="60" height="40"&gt;
+    &lt;img src="./pic2.jpg" width="60" height="40"&gt;
+    &lt;img src="./pic3.jpg" width="60" height="40"&gt;
+&lt;/span&gt;
+&lt;script&gt;
+    $("span").rsSliderLens({ ruler: { visible: false } });
+&lt;/script&gt;
+    </pre>
+    <section>
+        <!-- 17 -->
+        <span class="slider">
+            <img src="./pic1.jpg" width="60" height="40">
+            <img src="./pic2.jpg" width="60" height="40">
+            <img src="./pic3.jpg" width="60" height="40">
+        </span>
+        <label></label>
+    </section>
+
+    <p class="small"><br>Or with a little more customization</p>
+    <pre>
+&lt;span tabindex="0"&gt;
+    &lt;img src="./pic1.jpg" width="60" height="40"&gt;
+    &lt;img src="./pic2.jpg" width="60" height="40"&gt;
+    &lt;img src="./pic3.jpg" width="60" height="40"&gt;
+&lt;/span&gt;
+&lt;script&gt;
+    $("span").rsSliderLens({
+        <span>max: 2,
+        step: 1,
+        paddingStart: .15,
+        paddingEnd: .15,</span>
+        ruler: { visible: false }
+    });
+&lt;/script&gt;
+    </pre>
+    <section class="bottommargin">
+        <!-- 18 -->
+        <span class="slider" tabindex="0">
+            <img src="./pic1.jpg" width="60" height="40">
+            <img src="./pic2.jpg" width="60" height="40">
+            <img src="./pic3.jpg" width="60" height="40">
+        </span>
+        <label class="imgs"></label>
+    </section>
+    <p class="small">The tabindex makes the slider keyboard focusable</p>
+
+    <p>Responsive design. Please, resize your browser window.</p>
+    <p class="small">This is possible with the use of relative CSS units.<br>Don't like the dark layout? You can recompile LESS files to generate the layout you like.</p><br>
+    <pre>
+&lt;input type="range"&gt;
+&lt;script&gt;
+    $("span").rsSliderLens();
+&lt;/script&gt;
+    </pre>
+    <section class="resize">
+        <!-- 19 -->
+        <input class="horiz" type="range"><br>
+        <!-- 20 -->
+        <input class="horiz" type="range"><br>
+        <!-- 21 -->
+        <input class="vert" type="range">
+        <!-- 22 -->
+        <input class="vert" type="range">
+    </section>
+
+    <p>You have total flexibility over the style.</p>
+    <p class="small cssfun">Just change the CSS (not the javascript) to give wings to your imagination.</p>
+    <section id="cssfun1">
+        <label></label>
+        <!-- 23 -->
+        <span class="slider" tabindex="0"></span>
+    </section>
+
+    <section id="cssfun2">
+        <label></label>
+        <!-- 24 -->
+        <input type="range">
+        <label></label>
+    </section>
+
+    <section id="cssfun3">
+        <!-- 25 -->
+        <span class="slider" tabindex="0"> <!-- tabindex to enable keyboard focus -->
+            <ul>
+                <li>
+                iPhone<br>SE</li><li>
+                iPhone<br>7</li><li>
+                LG<br>G5</li><li>
+                Samsung<br>S7</li><li>
+                OnePlus<br>3</li><li>
+                HTC<br>10</li><li>
+                Huawei<br>P9</li>
+            </ul>
+        </span>
+        <figure class="phone0"></figure>
+    </section>
+
+    <section id="cssfun4">
+        <!-- 26 -->
+        <input type="range">
+    </section>
+
+    <section id="cssfun5">
+        <!-- 27 -->
+        <span class="slider" tabindex="0">
+            January<br>
+            February<br>
+            March<br>
+            April<br>
+            May<br>
+            June<br>
+            July<br>
+            August<br>
+            September<br>
+            October<br>
+            November<br>
+            December
+        </span>
+    </section>
+
+    <script>
+        $("#cssfun1 .slider").html(function() {
+            var str = "";
+            for(var speed = 0; speed <= 200; speed += 5) {
+                str += speed + "<br>";
+            }
+            return str;
+        });
+
+        var $inputs = $("input[type=range], span.slider"),
+            change = function (event, value, isFirstHandle) {
+                $(event.currentTarget).parent("div").next("label").text(value);
+            };
+        $inputs.eq(0).change(function () {
+            $(this).next("label").text(this.value);
+        }).change();
+
+        $inputs.eq(1).rsSliderLens({ onChange: change });
+        $inputs.eq(2).rsSliderLens({ step: 25, onChange: change });
+        $inputs.eq(3).rsSliderLens({ step: 25, paddingStart: 0.1, paddingEnd: 0.1, onChange: change });
+        $inputs.eq(4).rsSliderLens({ step: 25, paddingStart: 0.1, paddingEnd: 0.1, min: -50, max: 150, onChange: change });
+        $inputs.eq(5).rsSliderLens({ step: 25, paddingStart: 0.1, paddingEnd: 0.1, min: -50, max: 150, onChange: change });
+        $inputs.eq(6).rsSliderLens({ width: 400, step: 25, paddingStart: 0.1, paddingEnd: 0.1, min: -50, max: 150, onChange: change });
+        $inputs.eq(7).rsSliderLens({ step: 25, paddingStart: 0.1, paddingEnd: 0.1, min: -50, max: 150, onChange: change });
+        $inputs.eq(8).rsSliderLens({ step: 25, min: -50, max: 150, ruler: { labels: { visible: false }}, onChange: change });
+        $inputs.eq(9).rsSliderLens({ step: 25, paddingStart: 0.1, paddingEnd: 0.1, min: -50, max: 150, fixedHandle: true,
+            ruler: { size: 4 }, onChange: change
+        });
+        $inputs.eq(10).rsSliderLens({ width: 300, height: 45, step: 10, paddingStart: 0.1, paddingEnd: 0.1, range: { type: [20, 60], draggable: true }, onChange: change });
+        $inputs.eq(11).rsSliderLens({ step: 1, paddingStart: 0.1, paddingEnd: 0.1, ruler: { labels: { values: [0, 20, 40, 60, 80, 100] }}, onChange: change });
+
+        var labels = [];
+        for (var i = 0; i <= 500; i+= 20) {
+            labels.push(i);
+        }
+        $inputs.eq(12).rsSliderLens({ step: 1, paddingStart: 0.1, paddingEnd: 0.1, width: 300, max: 500, fixedHandle: true, ruler: { labels: { values: labels }, size: 4 }, onChange: change });
+        $inputs.eq(13).rsSliderLens({ step: 1, paddingStart: 0.1, paddingEnd: 0.1, min: -20, max: 20,
+            ruler: {
+                labels: {
+                    values: [-20, -10, 0, 10, 20],
+                    onCustomLabel: function(event, value) {
+                        return value > 0 ? '+' + value : value;
+                    },
+                    onCustomAttrs: function(event, value) {
+                        if (value < 0) return { style: 'fill:red' };
+                        if (value > 0) return { style: 'fill:green' };
+                        // no style defined for zero, so returns nothing (or undefined)
+                    }
+                  }
+                },
+                onCreate: function (event) {
+                    // append a new child <label> element to the .handle
+                    $(event.currentTarget).nextAll(".handle").append("<label>");
+                },
+                onChange: function (event, value) {
+                    // use the <label> element created at run-time, to display the current value
+                    var $labelElement = $(event.currentTarget).nextAll(".handle").children("label");
+                    $labelElement.text(value < 0 ? value : ((value > 0 ? '+' : '') + value));
+                }
+            });
+        $inputs.eq(14).rsSliderLens({
+            onChange: function (event, value) {
+                $("#changeLabels label").first().text(value);
+            },
+            onFinalChange: function (event, value) {
+                $("#changeLabels label").last().text(value);
+            }
+        });
+        $inputs.eq(15).rsSliderLens({
+            step: 5,
+            width: 300,
+            paddingStart: .1,
+            paddingEnd: .1,
+            value: [10, 25],
+            onChange: function (event, value, isFirstHandle) {
+                $("#doubleHandleLabels label").eq(isFirstHandle ? 0 : 1).text(value);
+            }
+        });
+        $inputs.slice(16, 18).rsSliderLens({ ruler: { visible: false }, onChange: change });
+        $inputs.eq(18).rsSliderLens({ max: 2, step: 1, paddingStart: .15, paddingEnd: .15, ruler: { visible: false }, onChange: change });
+
+        $inputs.eq(19).rsSliderLens({ paddingStart: .1, paddingEnd: .1, ruler: { labels: { values: [0, 20, 40, 60, 80, 100] }} });
+        $inputs.eq(20).rsSliderLens({ paddingStart: .1, paddingEnd: .1, fixedHandle: true, ruler: { labels: { values: [0, 20, 40, 60, 80, 100] }} });
+        $inputs.eq(21).rsSliderLens({ width: 50, paddingStart: .1, paddingEnd: .1, orientation: 'vert', ruler: { labels: { values: [0, 20, 40, 60, 80, 100] }} });
+        $inputs.eq(22).rsSliderLens({ width: 50, paddingStart: .1, paddingEnd: .1, orientation: 'vert', fixedHandle: true, ruler: { labels: { values: [0, 20, 40, 60, 80, 100] }} });
+
+        $("aside input[type=radio]").change(function() {
+            $("aside").removeClass("opt1 opt2 opt3 opt4 opt5").addClass("opt" + this.value);
+        });
+        $("#o1, #o2, #o3, #o4, #o5").hide();
+
+        $inputs.eq(23).rsSliderLens({
+            min: 0,
+            max: 200,
+            height: 200,
+            fixedHandle: true,
+            step: 1,
+            paddingStart: .012,
+            paddingEnd: .012,
+            handle: {
+                zoom: 2
+            },
+            ruler: {
+                visible: false
+            },
+            onChange: function (event, value, isFirstHandle) {
+                $("#cssfun1 > label").text(value + " km/h");
+            }
+        });
+
+        $inputs.eq(24).rsSliderLens({
+            paddingStart: .075,
+            paddingEnd: .075,
+            value: [20, 40],
+            width: 300,
+            step: 1,
+            min: -20,
+            max: 70,
+            handle: {
+                size: .15
+            },
+            range: {
+                type: 'between'
+            },
+            ruler: {
+                labels: {
+                    values: [-20, -10, 0, 10, 20, 30, 40, 50, 60, 70]
+                }
+            },
+            onChange: function (event, value, isFirstHandle) {
+                $("#cssfun2 > label").eq(isFirstHandle ? 0 : 1).text(value + "°C");
+            }
+        });
+
+        var animObj = {
+            $figure: $("#cssfun3 > figure")
+        };
+        $inputs.eq(25).rsSliderLens({
+            min: 0,
+            max: 6,
+            step: 1,
+            paddingStart: .07,
+            paddingEnd: .07,
+            ruler: {
+                visible: false
+            },
+            handle: {
+                zoom: 1.8,
+                animation: 300
+            },
+            onChange: function (event, value, isFirstHandle) {
+                if (animObj.timeoutIdHide) {
+                    clearTimeout(animObj.timeoutIdHide);
+                }
+                animObj.timeoutIdHide = setTimeout(function () {
+                    animObj.$figure.removeClass('phone0 phone1 phone2 phone3 phone4 phone5 phone6');
+                    if (animObj.timeoutIdShow) {
+                        clearTimeout(animObj.timeoutIdShow);
+                    }
+                    animObj.timeoutIdShow = setTimeout(function() {
+                        animObj.$figure.addClass('phone' + value);
+                        delete animObj.timeoutIdShow;
+                    }, 100);
+                    delete animObj.timeoutIdHide;
+                }, 200);
+            }
+        });
+
+        $inputs.eq(26).rsSliderLens({
+            height: 211,
+            min: 0,
+            max: 4,
+            step: 1,
+            flipped: true,
+            paddingStart: .2,
+            paddingEnd: .2,
+            handle: {
+                pos: .2,
+                zoom: 1
+            },
+            ruler: {
+                labels: {
+                    pos: .4,
+                    onCustomLabel: function (event, value) {
+                        switch (value) {
+                            case 0: return 'very unhappy';
+                            case 1: return 'unhappy';
+                            case 2: return 'normal';
+                            case 3: return 'happy';
+                            case 4: return 'very happy';
+                        }
+                    },
+                    onCustomAttrs: function (event, value, x, y) {
+                        return {
+                            transform: 'rotate(-25 ' + x + ',' + y + ')',
+                            'text-anchor': 'start'
+                        };
+                    }
+                },
+                tickMarks: {
+                    short: { visible: false },
+                    long: { visible: false }
+                },
+                onCustom: function(event, $svg, width, height, zoom, magnifiedRuler, createSvgDomFunc) {
+                    if (magnifiedRuler) {
+                        $svg.append(createSvgDomFunc('image', { width: 30, height: 155, x: 38, y: 27, 'href': './emotions.png' }));
+                    }
+                }
+            }
+        });
+
+        $inputs.eq(27).rsSliderLens({
+            min: 1,
+            max: 12,
+            height: 200,
+            fixedHandle: true,
+            step: 1,
+            paddingStart: .04,
+            paddingEnd: .04,
+            handle: {
+                size: .12
+            },
+            ruler: {
+                visible: false
+            }
+        });
+
+        var resizeObj = {
+            timeoutId: null,
+            doResize: function () {
+                $inputs.eq(19).add($inputs.eq(21)).rsSliderLens('resizeUpdate');
+                resizeObj.timeoutId = null;
+            },
+            resize: function () {
+                if (!resizeObj.timeoutId) {
+                    resizeObj.timeoutId = setTimeout(resizeObj.doResize, 100);
+                }
+            }
+        };
+        resizeObj.doResize();
+        $(window).bind('resize', resizeObj.resize);
+    </script>
+</body>
+</html>

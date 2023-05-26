@@ -1,0 +1,471 @@
+body {
+    line-height: 1.5em;
+}
+
+pre {
+    margin: 0 0 1em 5em;
+    padding: 1em 1em 0;
+    background-color: #ccc;
+    display: inline-block;
+    line-height: 1.25em;
+}
+
+h1, p, aside {
+    color: white;
+}
+
+aside label {
+    display: block;
+    cursor: pointer;
+}
+
+label.imgs:before {
+    content: 'image #';
+}
+
+p {
+    margin-top: 3em;
+    font-size: 1.25em;
+}
+
+p.small {
+    margin: 0 0 0 4em;
+    font-size: 1em;
+    color: #ccc;
+}
+
+pre + section {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5em;
+}
+
+pre + section.bottommargin {
+    margin-bottom: 1em;
+}
+
+pre + section input[type=range],
+pre + section div {
+    display: inline-block;
+}
+
+pre + section > input[type=range] + label,
+pre + section > div + label,
+#changeLabels,
+#doubleHandleLabels {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 1em;
+    color: white;
+}
+#changeLabels label,
+#doubleHandleLabels label {
+    cursor: inherit;
+}
+#changeLabels label:before,
+#doubleHandleLabels label:before {
+    content: 'onChange:';
+    width: 7em;
+    display: inline-block;
+}
+#changeLabels label:last-child:before {
+    content: 'onFinalChange:';
+}
+#doubleHandleLabels label:first-child:before {
+    content: 'first handle:';
+}
+#doubleHandleLabels label:last-child:before {
+    content: 'second handle:';
+}
+
+.slider img {
+    vertical-align: middle;
+}
+
+code {
+    background-color: #555;
+    padding: 0 .5em;
+    border-radius: 1em;
+}
+
+pre span {
+    font-weight: bold;
+}
+
+pre mark {
+    color: grey;
+    background-color: inherit;
+    font-style: italic;
+    font-weight: normal;
+}
+
+#o1 input[type=range] {
+    width: 400px;
+}
+
+#o3 input[type=range] {
+    width: 40px;
+    height: 300px;
+}
+
+#o1, #o2, #o3, #o4, #o5 {
+    margin-top: 1em;
+}
+
+aside.opt1 ~ #o1,
+aside.opt2 ~ #o2,
+aside.opt3 ~ #o3,
+aside.opt4 ~ #o4,
+aside.opt5 ~ #o5 {
+    display: block !important;
+}
+
+#custom + .range,
+#custom ~ .handle .range {
+    background: -moz-linear-gradient(left, red 0%, green 100%);
+    background: -webkit-linear-gradient(left, red 0%, green 100%);
+    background: linear-gradient(to right, red 0%, green 100%);
+}
+#custom ~ .handle {
+    top: 80% !important;
+    height: 200% !important;
+}
+#custom ~ .handle svg {
+    top: 35% !important;
+}
+#custom ~ .handle .range {
+    top: 32% !important;
+}
+#custom ~ .handle label {
+    position: absolute;
+    bottom: .3em;
+    left: 0;
+    right: 0;
+    line-height: 1em;
+    text-align: center;
+    font-family: monospace;
+    font-size: .9em;
+    letter-spacing: .15em;
+    color: white;
+    text-shadow: 0.0625em 0.0625em 0.0625em #777,
+                 -0.0625em -0.0625em 0.0625em #777,
+                 0.0625em -0.0625em 0.0625em #777,
+                 -0.0625em 0.0625em 0.0625em #777;
+}
+
+.resize {
+    width: 50%;
+    height: 30vw;
+    position: relative;
+}
+
+.resize .sliderlens {
+    margin: 2% 0;
+    vertical-align: top;
+}
+
+.resize .sliderlens.horiz {
+    width: 100% !important;
+    height: 15% !important;
+}
+
+.resize .sliderlens.vert {
+    width: 3em;
+}
+
+.resize .sliderlens.vert.fixed {
+    margin-left: 4em;
+}
+
+.resize .vert {
+    width: 15% !important;
+    height: 40% !important;
+}
+
+#cssfun1,
+#cssfun2,
+#cssfun3,
+#cssfun4,
+#cssfun5 {
+    display: inline-block;
+    margin: 0 0 5em 4em;
+    vertical-align: top;
+}
+
+#cssfun1 .slider {
+    color: #a9a94d;
+    font-family: monospace;
+    text-align: center;
+    font-size: .8em;
+    display: inline-block;
+}
+
+#cssfun1 .slider {
+    text-shadow: 0.1em 0.1em black;
+}
+
+#cssfun1:before,
+#cssfun2:before,
+#cssfun1 > label,
+#cssfun4:before {
+    display: block;
+    font-size: .8em;
+    font-family: monospace;
+    color: rgb(186, 186, 186);
+}
+
+#cssfun1 > label {
+    width: 5em;
+    line-height: 1.5em;
+}
+
+#cssfun1:before {
+    content: 'Speed';
+}
+
+#cssfun1 .sliderlens > .handle:before {
+    border-bottom-color: #a9a94d;
+}
+
+#cssfun2:before {
+    content: 'Temperature';
+    margin-left: 7em;
+}
+
+#cssfun4:before {
+    content: 'Your Feedback?';
+    margin-bottom: 1em;
+}
+
+#cssfun2 .sliderlens > .handle1:before,
+#cssfun2 .sliderlens > .handle2:before {
+    background: #525252;
+}
+
+#cssfun2 .sliderlens > .handle1 svg,
+#cssfun2 .sliderlens > .handle1 .range,
+#cssfun2 .sliderlens > .handle2 svg,
+#cssfun2 .sliderlens > .handle2 .range {
+    display: none !important;
+}
+
+#cssfun2 .sliderlens > .handle1:after,
+#cssfun2 .sliderlens > .handle2:after {
+    content: 'min';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: .6em;
+    line-height: .6em;
+    color: rgb(186, 186, 186);
+    text-align: center;
+    background: none;
+    -webkit-transform: translateY(40%);
+    -moz-transform: translateY(40%);
+    -ms-transform: translateY(40%);
+    -o-transform: translateY(40%);
+    transform: translateY(40%);
+}
+
+#cssfun2 .sliderlens > .handle2:after {
+    content: 'max';
+}
+
+#cssfun2 .sliderlens > .handle1 {
+    border-radius: 2em 0 0 2em;
+}
+
+#cssfun2 .sliderlens > .handle2 {
+    border-radius: 0 2em 2em 0;
+}
+
+#cssfun2 > label {
+    display: inline-block;
+    font-family: monospace;
+    width: 5em;
+    font-size: .8em;
+    margin: 0;
+}
+
+#cssfun2 > label:first-child {
+    text-align: right;
+}
+
+#cssfun2 > label:last-child {
+    text-align: left;
+}
+
+#cssfun2 .sliderlens > .handle1:after,
+#cssfun2 > label:first-child {
+    color: #7FB3D5;
+}
+
+#cssfun2 .sliderlens > .handle2:after,
+#cssfun2 > label:last-child {
+    color: #D98880;
+}
+
+#cssfun1 {
+    float: left;
+    width: auto;
+}
+
+#cssfun3 {
+    margin-left: 5.5em;
+    margin-top: 1.5em;
+}
+
+#cssfun3 .sliderlens > .handle {
+    border-radius: .5em;
+}
+
+#cssfun3 ul {
+    color: #a9a94d;
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: .8em;
+    text-align: center;
+}
+
+#cssfun3 ul li {
+    font-family: monospace;
+    font-size: .6em;
+    display: inline-block;
+    padding: .25em;
+    width: 5em;
+}
+
+#cssfun3 figure {
+    display: block;
+    height: 140px;
+    opacity: 0;
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    transform: scale(1.2);
+    -webkit-transition: opacity 100ms, -webkit-transform 100ms;
+    -ms-transition: opacity 100ms, -ms-transform 100ms;
+    -moz-transition: opacity 100ms, -moz-transform 100ms;
+    -o-transition: opacity 100ms, -o-transform 100ms;
+    transition: opacity 100ms, transform 100ms;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0 2.5em 0 0;
+}
+
+#cssfun3 figure.phone0,
+#cssfun3 figure.phone1,
+#cssfun3 figure.phone2,
+#cssfun3 figure.phone3,
+#cssfun3 figure.phone4,
+#cssfun3 figure.phone5,
+#cssfun3 figure.phone6 {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+#cssfun3 figure.phone0 {
+    background-image: url('phone0.png');
+}
+
+#cssfun3 figure.phone1 {
+    background-image: url('phone1.png');
+}
+
+#cssfun3 figure.phone2 {
+    background-image: url('phone2.png');
+}
+
+#cssfun3 figure.phone3 {
+    background-image: url('phone3.png');
+}
+
+#cssfun3 figure.phone4 {
+    background-image: url('phone4.png');
+}
+
+#cssfun3 figure.phone5 {
+    background-image: url('phone5.png');
+}
+
+#cssfun3 figure.phone6 {
+    background-image: url('phone6.png');
+}
+
+#cssfun4 .range,
+#cssfun4 .handle:before,
+#cssfun4 .handle svg > g {
+    display: none !important;
+}
+
+#cssfun4 .handle {
+    width: 30% !important;
+    height: 18% !important;
+}
+
+#cssfun4 .handle:after {
+    background:
+        -moz-radial-gradient(center, ellipse cover, rgba(60, 60, 60, 0.05) 0%, rgba(60, 60, 60, 0.4) 30%, rgba(60, 60, 60, 0.8) 70%),
+        -moz-linear-gradient(top, rgba(169, 169, 169, 0.95) 0%, rgba(169, 169, 169, 0.25) 30%, rgba(56, 56, 56, 0.25) 70%, rgba(56, 56, 56, 0.95) 100%);
+    background:
+        -webkit-radial-gradient(center, ellipse cover, rgba(60, 60, 60, 0.05) 0%, rgba(60, 60, 60, 0.4) 30%, rgba(60, 60, 60, 0.8) 70%),
+        -webkit-linear-gradient(top, rgba(169, 169, 169, 0.95) 0%, rgba(169, 169, 169, 0.25) 30%, rgba(56, 56, 56, 0.25) 70%, rgba(56, 56, 56, 0.95) 100%);
+    background:
+        radial-gradient(ellipse at center, rgba(60, 60, 60, 0.05) 0%, rgba(60, 60, 60, 0.4) 30%, rgba(60, 60, 60, 0.8) 70%),
+        linear-gradient(to bottom, rgba(169, 169, 169, 0.95) 0%, rgba(169, 169, 169, 0.25) 30%, rgba(56, 56, 56, 0.25) 70%, rgba(56, 56, 56, 0.95) 100%);
+}
+
+#cssfun4 svg > g > text {
+    font-size: .8em;
+    font-family: monospace;
+    letter-spacing: .1em;
+}
+
+p.cssfun {
+    margin: 0 0 3em 0;
+}
+
+#cssfun5 {
+    text-align: center;
+}
+
+#cssfun5 .sliderlens {
+    border: none;
+    background-color: inherit;
+}
+
+#cssfun5 .slider {
+    display: block !important;
+    color: #ddd;
+}
+
+#cssfun5 .handle .slider {
+    color: white;
+}
+
+#cssfun5 .sliderlens:before,
+#cssfun5 .sliderlens .handle:before {
+    display: none;
+}
+
+#cssfun5 .sliderlens:after {
+    box-shadow: inset 0 6em 4em -3em #454545, inset 0 -6em 4em -3em #454545;
+    border: none;
+}
+
+#cssfun5 .handle:after {
+    background: none;
+}
+
+#cssfun5 .handle {
+    box-shadow: 0 0 0.3125em -0.03125em #333;
+}
